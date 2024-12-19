@@ -18,9 +18,9 @@ export function ProductList({ products, loading, ...other }) {
         display="grid"
         gridTemplateColumns={{
           xs: 'repeat(1, 1fr)',
-          sm: 'repeat(2, 1fr)',
-          md: 'repeat(3, 1fr)',
-          lg: 'repeat(4, 1fr)',
+          sm: 'repeat(4, 1fr)',
+          md: 'repeat(5, 1fr)',
+          lg: 'repeat(7, 1fr)',
         }}
         {...other}
       >

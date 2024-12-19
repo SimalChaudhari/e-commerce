@@ -86,6 +86,7 @@ export function HeaderSection({
       >
         <Container
           {...slotProps?.container}
+          maxWidth="2xl" // Change to 'lg', 'xl', or false for full width
           sx={{
             height: 1,
             display: 'flex',

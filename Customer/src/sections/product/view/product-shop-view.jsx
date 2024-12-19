@@ -113,7 +113,7 @@ export function ProductShopView({ products, loading }) {
   const renderNotFound = <EmptyContent filled sx={{ py: 10 }} />;
 
   return (
-    <Container sx={{ mb: 15 }}>
+    <Container maxWidth="2xl">
       <CartIcon totalItems={checkout.totalItems} />
 
       <Typography variant="h4" sx={{ my: { xs: 3, md: 5 } }}>
