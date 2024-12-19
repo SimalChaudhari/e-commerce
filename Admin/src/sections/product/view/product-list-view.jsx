@@ -34,6 +34,7 @@ import { applyFilter } from '../utils';
 import { ProductTableRow } from './table/product-table-row';
 import { ProductTableToolbar } from './table/product-table-toolbar';
 import { useFetchProductData } from '../components/fetch-product';
+import { useNavigate } from 'react-router';
 
 // ----------------------------------------------------------------------
 export function ProductListView() {
@@ -44,12 +45,15 @@ export function ProductListView() {
     const [selectedRows, setSelectedRows] = useState([]); // Store selected row IDs
     const [deleting, setDeleting] = useState(false); // Track delete operation
 
+    const navigate = useNavigate();
+
+
 
     const { fetchData, fetchDeleteItem, deleteAllItems } = useFetchProductData(); // Destructure fetchData from the custom hook
     const dispatch = useDispatch();
     const _productList = useSelector((state) => state.product?.product || []);
     const [tableData, setTableData] = useState(_productList);
- 
+
     const options = _productList.map(opt => ({
         group: opt.group,
         subGroup1: opt.subGroup1,
@@ -179,13 +183,11 @@ export function ProductListView() {
                     ]}
                     action={
                         <Button
-                            // href={paths?.dashboard?.user?.new}
-                            onClick={confirmSync.onTrue} // Open the sync confirmation dialog
+                            onClick={() => navigate(paths?.products?.create)} // Navigate to the create product page
                             variant="contained"
-                            startIcon={<Iconify icon="eva:sync-fill" />}
-                            disabled={loading}
+                            startIcon={<Iconify icon="eva:plus-fill" />} // Updated icon for "Add"
                         >
-                            {loading ? 'Syncing...' : 'Sync Products'}
+                            Create Product
                         </Button>
                     }
                     sx={{ mb: { xs: 3, md: 5 } }}

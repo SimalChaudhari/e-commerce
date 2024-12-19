@@ -15,6 +15,7 @@ import { PaymentCreateView } from 'src/sections/payments/payment-form';
 import { PaymentEditView } from 'src/sections/payments/payment-edit';
 import { PaymentViewUi } from 'src/sections/payments/payment-vendor-view';
 import { LedgerListDetails } from 'src/sections/accounting/ledger/view/ledger-details';
+import { ProductCreateView } from 'src/sections/product/view/product-create';
 
 // Overview
 const IndexPage = lazy(() => import('src/pages/dashboard'));
@@ -68,6 +69,7 @@ export const adminRoute =[
       element: CONFIG.auth.skip ? <>{layoutContent}</> : <AuthGuard>{layoutContent}</AuthGuard>,
       children: [
         { element: <ProductPage />, index: true },
+        { path: 'create', element: <ProductCreateView/> },
         { path: 'edit/:id', element: <ProductEditView /> },
         { path: 'view/:id', element: <ProductView /> },
   

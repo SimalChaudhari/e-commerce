@@ -7,8 +7,8 @@ export class ItemEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string; // Change to string to match UUID format
 
-  @Column()
-  itemName!: string; // This should correspond to the actual property
+ @Column({ type: 'varchar', nullable: false })
+  itemName?: string; // This should correspond to the actual property
 
   @Column({ type: 'varchar', nullable: true })
   alias!: string;

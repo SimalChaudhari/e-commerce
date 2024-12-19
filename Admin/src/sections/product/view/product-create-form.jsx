@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,13 +9,12 @@ import {
     Typography,
     Button,
     Grid,
-    InputAdornment,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Field, Form } from 'src/components/hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { editProduct } from 'src/store/action/productActions';
+import { createProduct } from 'src/store/action/productActions'; // Replace with your create action
 
 const ProductSchema = zod.object({
     itemName: zod.string().min(1, { message: 'Item Name is required!' }),
@@ -39,35 +38,34 @@ const ProductSchema = zod.object({
     dimensionalFiles: zod.array(zod.any()).optional(),
 });
 
-export default function ProductNewEditForm({ currentProduct }) {
-    console.log("🚀 ~ ProductNewEditForm ~ currentProduct:", currentProduct)
+export default function ProductCreateForm() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const defaultValues = useMemo(
         () => ({
-            itemName: currentProduct?.itemName || '',
-            alias: currentProduct?.alias || '',
-            partNo: currentProduct?.partNo || '',
-            description: currentProduct?.description || '',
-            group: currentProduct?.group || '',
-            subGroup1: currentProduct?.subGroup1 || '',
-            subGroup2: currentProduct?.subGroup2 || '',
-            baseUnit: currentProduct?.baseUnit || '',
-            alternateUnit: currentProduct?.alternateUnit || '',
-            conversion: currentProduct?.conversion || '',
-            denominator: currentProduct?.denominator || '',
-            sellingPriceDate: currentProduct?.sellingPriceDate || '',
-            sellingPrice: currentProduct?.sellingPrice || 0,
-            gstApplicable: currentProduct?.gstApplicable || '',
-            gstApplicableDate: currentProduct?.gstApplicableDate || '',
-            taxability: currentProduct?.taxability || '',
-            gstRate: currentProduct?.gstRate || 0,
-            productImages: currentProduct?.productImages || [],
-            dimensionalFiles: currentProduct?.dimensionalFiles || [],
+            itemName: '',
+            alias: '',
+            partNo: '',
+            description: '',
+            group: '',
+            subGroup1: '',
+            subGroup2: '',
+            baseUnit: '',
+            alternateUnit: '',
+            conversion: '',
+            denominator: '',
+            sellingPriceDate: '',
+            sellingPrice: 0,
+            gstApplicable: '',
+            gstApplicableDate: '',
+            taxability: '',
+            gstRate: 0,
+            productImages: [],
+            dimensionalFiles: [],
         }),
-        [currentProduct]
+        []
     );
 
     const methods = useForm({
@@ -75,14 +73,8 @@ export default function ProductNewEditForm({ currentProduct }) {
         defaultValues,
     });
 
-    const { reset, handleSubmit, setValue, watch } = methods;
+    const { handleSubmit, watch } = methods;
     const values = watch();
-
-    useEffect(() => {
-        if (currentProduct) {
-            reset(defaultValues);
-        }
-    }, [currentProduct, defaultValues, reset]);
 
     const onSubmit = handleSubmit(async (data) => {
         const formData = new FormData();
@@ -96,12 +88,12 @@ export default function ProductNewEditForm({ currentProduct }) {
 
         try {
             setLoading(true);
-            const res = await dispatch(editProduct(currentProduct?.id || '', formData));
+            const res = await dispatch(createProduct(formData)); // Use the create action
             if (res) {
-                navigate('/products');
+                navigate('/products'); // Redirect to the product list page
             }
         } catch (error) {
-            console.error('Error updating product:', error);
+            console.error('Error creating product:', error);
         } finally {
             setLoading(false);
         }
@@ -110,10 +102,9 @@ export default function ProductNewEditForm({ currentProduct }) {
     const renderFields = (
         <Card>
             <Stack spacing={3} sx={{ p: 3 }}>
-                <Typography variant="h5">Product Details</Typography>
+                <Typography variant="h5">Create Product</Typography>
                 <Divider />
                 <Grid container spacing={3}>
-                    {/* General Fields */}
                     <Grid item xs={12} md={6}>
                         <Field.Text name="itemName" label="Item Name" required />
                     </Grid>
@@ -165,7 +156,6 @@ export default function ProductNewEditForm({ currentProduct }) {
                     <Grid item xs={12} md={6}>
                         <Field.Text name="gstRate" label="GST Rate" type="number" />
                     </Grid>
-
                     <Grid item xs={12} md={6}>
                         <Field.Upload
                             multiple
@@ -175,7 +165,6 @@ export default function ProductNewEditForm({ currentProduct }) {
                             maxSize={3145728}
                         />
                     </Grid>
-
                     <Grid item xs={12} md={6}>
                         <Field.Upload
                             multiple
@@ -192,11 +181,11 @@ export default function ProductNewEditForm({ currentProduct }) {
 
     const renderActions = (
         <Stack spacing={3} direction="row" justifyContent="flex-end">
-            <Button variant="outlined" onClick={() => navigate(-1)}>
+            <Button variant="outlined" onClick={() => navigate('/products')}>
                 Cancel
             </Button>
             <LoadingButton type="submit" variant="contained" loading={loading}>
-                {!currentProduct ? 'Create Product' : 'Save Changes'}
+                Create Product
             </LoadingButton>
         </Stack>
     );

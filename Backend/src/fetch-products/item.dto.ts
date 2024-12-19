@@ -1,14 +1,13 @@
-// item.dto.js
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsDateString, IsArray } from 'class-validator';
 
 export class ItemDto {
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
-    itemName!: string;
+    itemName?: string;
 
     @IsOptional()
     @IsString()
-    alias!: string;
+    alias?: string;
 
     @IsOptional()
     @IsString()
@@ -20,21 +19,21 @@ export class ItemDto {
 
     @IsNotEmpty()
     @IsString()
-    group?: string;
+    group!: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
-    subGroup1!: string;
+    subGroup1?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
-    subGroup2!: string;
+    subGroup2?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     baseUnit?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     alternateUnit?: string;
 
@@ -42,33 +41,41 @@ export class ItemDto {
     @IsString()
     conversion?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsNumber()
     denominator?: number;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsDateString()
     sellingPriceDate?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsNumber()
     sellingPrice?: number;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     gstApplicable?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsDateString()
     gstApplicableDate?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     taxability?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsNumber()
     gstRate?: number;
-    
 
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true }) // Validate that each entry in the array is a string
+    productImages?: string[];
+
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true }) // Validate that each entry in the array is a string
+    dimensionalFiles?: string[];
 }

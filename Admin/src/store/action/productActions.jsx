@@ -4,7 +4,7 @@ import { PRODUCT_GET_BY_LIST, PRODUCT_LIST } from "../constants/actionTypes";
 
 export const itemList = () => async (dispatch) => {
     try {
-        const response = await axiosInstance.get('/items');
+        const response = await axiosInstance.get('/items/all');
         dispatch({
             type: PRODUCT_LIST,
             payload: response.data?.data, // Assuming response contains the customers data
@@ -20,10 +20,10 @@ export const itemList = () => async (dispatch) => {
 
 export const itemGetByList = (id) => async (dispatch) => {
     try {
-        const response = await axiosInstance.get(`/items/get/${id}`);
+        const response = await axiosInstance.get(`/items/${id}`);
         dispatch({
             type: PRODUCT_GET_BY_LIST,
-            payload: response.data?.data, // Assuming response contains the customers data
+            payload: response.data, // Assuming response contains the customers data
         });
         return true;
     } catch (error) {
@@ -71,7 +71,7 @@ export const productList = () => async (dispatch) => {
 
 export const createProduct = (productData) => async (dispatch) => {
     try {
-        const response = await axiosInstance.post('/products/create', productData);
+        const response = await axiosInstance.post('/items/create', productData);
         if (response && response.status >= 200 && response.status < 300) {
             toast.success(response.data.message || 'User registered successfully!');
             return true;
@@ -85,9 +85,9 @@ export const createProduct = (productData) => async (dispatch) => {
     return false; // Return false for any errors
 };
 
-export const editProduct = (productId, productData) => async (dispatch) => {
+export const editProduct = (id, data) => async (dispatch) => {
     try {
-        const response = await axiosInstance.post(`/items/upload-files/${productId}`, productData);    // Check if the response is successful
+        const response = await axiosInstance.put(`/items/update/${id}`, data);    // Check if the response is successful
         if (response && response.status >= 200 && response.status < 300) {
             toast.success(response.data.message || 'Product updated successfully!');
             return true; // Indicate successful update
